@@ -1,0 +1,33 @@
+= Description =
+This  provides a sha3sum tool using go.crypto/sha3 in similar vein to other
+tools such as md5sum, shasum etc. The internals of the Keccak-f function are
+computed in go.crypto/keccakf.go used by go.crypto/sha3.
+Refer to go.crypto/sha3 reference implementation for more information and refer
+to Keccak web site (http://keccak.noekeon.org/) for detailed information on SHA3.
+
+= Use =
+Select the appropriate one for your OS from the builds sub-dir and copy it to your $PATH.
+
+Tested on:
+ - OpenBSD 5.4 x86_64
+ - OSX 10.9 x86_64
+ - Linux 3.x arm6/i686/x86_64
+
+Built using go versions:
+ - go devel +32f0dc88f804 (OSX x86_64, Linux x86_64)
+ - go1.2rc2(Linux arm6)
+ - go1 (Linux i686)
+ - go1.2 (OpenBSD x86_64)
+
+Apologies if I have not made your OS build available.
+
+= Build Dependency =
+sha3sum requires go.crypto's sha3 package (https://code.google.com/p/go/source/browse/sha3/sha3.go?repo=crypto)
+
+= Build =
+To build from source, install go SDK from http://golang.org and run `go get code.google.com/p/go.crypto/sha3`
+
+Then run `sudo make all` (assuming you have appropriate rights to sudo).
+
+= Enhancements & Patches =
+Pull requests are most welcome.

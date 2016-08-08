@@ -1,11 +1,20 @@
-all: build install clean
 
 build:
-	go build src/sha3sum.go
+	@echo "\033[0;42mBuilding sha3sum...\033[0;0m"
+	@go get golang.org/x/crypto/sha3
+	@go build sha3sum.go
 
 install: build
-	cp ./sha3sum /usr/bin/
+	@echo "\033[0;42mInstalling sha3sum...\033[0;0m"
+	@mkdir -p build/usr/bin >/dev/null 2>&1 
+	@mv -vf ./sha3sum build/usr/bin/ >/dev/null 2>&1
 
-clean: 
-	rm -f ./sha3sum
+clean:
+	@echo "\033[0;42mCleaning sha3sum build...\033[0;0m"
+	@rm -f ./sha3sum
+	@rm -rf build
 
+test:
+	@go test
+	
+.PHONY: build install

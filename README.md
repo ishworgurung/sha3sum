@@ -1,3 +1,6 @@
+## Build status
+[![Build Status](https://drone.io/github.com/badbug0101/sha3sum/status.png)](https://drone.io/github.com/badbug0101/sha3sum/latest)
+
 ## About
 This tool provides a sha3sum facility using golang.org/x/crypto/sha3. The details of can be found at https://godoc.org/golang.org/x/crypto/sha3. You can refer to https://godoc.org/golang.org/x/crypto/sha3 for more information and refer to Keccak web site (http://keccak.noekeon.org/) for detailed information on SHA-3.
 

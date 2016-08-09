@@ -36,7 +36,7 @@ This tool provides a sha3sum facility using golang.org/x/crypto/sha3. The detail
 
   ```
   # /usr/bin/sha3sum -bits=512 -file=/bin/ls
-  095d168bac9abeb60ce41a58d8e8bacd6525db3c8890790b56646896542724488b07764d1e274af802d956ef11a7af518c4ff56ea51da6e2a04807d5306681c3 /bin/ls
+  db20c1839983506f01c03ac3f876f99b9110c9ac6dd02b48789a48d8b0e04fa3d382e15ab1afe27595f4583a190309bfd7daefb30a4dcd6e78e7dfbd43909a0e /bin/ls
   ```
 
 ## Build

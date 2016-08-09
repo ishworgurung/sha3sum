@@ -56,7 +56,7 @@ func main() {
 			fmt.Fprintln(os.Stderr, "stat error:", err)
 			os.Exit(ERR_STAT)
 		}
-		buf := make([]byte, 1, fi.Size())
+		buf := make([]byte, fi.Size())
 		c, err := os.Open(*file)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, "open error:", err)

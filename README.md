@@ -1,5 +1,3 @@
-## Build status
-
 [![Build Status](https://drone.io/github.com/badbug0101/sha3sum/status.png)](https://drone.io/github.com/badbug0101/sha3sum/latest)
 
 ## About
@@ -19,7 +17,7 @@ This tool provides a sha3sum facility using golang.org/x/crypto/sha3. The detail
     	file to perform SHA-3. (default "-")
   ```
 
-* Calculate SHA-3 hash from stdin (default if `-file arg` is not provided):
+* Calculate SHA-3 hash from stdin (default if `-file=arg` is not provided):
 
   ```
   # sha3sum -bits=256 -file=-
@@ -28,6 +26,9 @@ This tool provides a sha3sum facility using golang.org/x/crypto/sha3. The detail
   OR
   # sha3sum -bits=256
   Little fox jumped over the tree (or something like that).
+  bfd4491e0b904d781c2ef9c446bfa4504935fff746a253f68dd44b03fe1ab464 -
+  OR
+  # echo -n "Little fox jumped over the tree (or something like that)." | ./builds/usr/bin/sha3sum -bits=256
   bfd4491e0b904d781c2ef9c446bfa4504935fff746a253f68dd44b03fe1ab464 -
   ```
 
@@ -40,7 +41,7 @@ This tool provides a sha3sum facility using golang.org/x/crypto/sha3. The detail
 
 ## Build
 
-To build it, install the `go` SDK from http://golang.org and run `go get golang.org/x/crypto/sha3` and then run `make`. Please note that old builds are provided under `old-builds` but I don't maintain them anywhere.
+To build it, install the `go` SDK from http://golang.org and run `make`. Please note that old builds are provided under `old-builds` but I don't maintain them anywhere.
 
 ## Contributing
 

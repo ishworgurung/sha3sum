@@ -22,11 +22,11 @@ This tool provides a sha3sum facility using golang.org/x/crypto/sha3. The detail
 * Calculate SHA-3 hash from stdin (default if `-file arg` is not provided):
 
   ```
-  # sha3sum -bits 256 -file -
+  # sha3sum -bits=256 -file=-
   Little fox jumped over the tree (or something like that).
   bfd4491e0b904d781c2ef9c446bfa4504935fff746a253f68dd44b03fe1ab464 -
   OR
-  # sha3sum -bits 256
+  # sha3sum -bits=256
   Little fox jumped over the tree (or something like that).
   bfd4491e0b904d781c2ef9c446bfa4504935fff746a253f68dd44b03fe1ab464 -
   ```
@@ -34,7 +34,7 @@ This tool provides a sha3sum facility using golang.org/x/crypto/sha3. The detail
 * Calculate SHA-3 hash of a file:
 
   ```
-  # /usr/bin/sha3sum -bits 512 -file /bin/ls
+  # /usr/bin/sha3sum -bits=512 -file=/bin/ls
   095d168bac9abeb60ce41a58d8e8bacd6525db3c8890790b56646896542724488b07764d1e274af802d956ef11a7af518c4ff56ea51da6e2a04807d5306681c3 /bin/ls
   ```
 

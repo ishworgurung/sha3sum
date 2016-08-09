@@ -5,7 +5,7 @@ import (
 	"encoding/hex"
 	"flag"
 	"fmt"
-	"golang.org/x/crypto/sha3" //https://godoc.org/golang.org/x/crypto/sha3
+	"golang.org/x/crypto/sha3"
 	"hash"
 	"os"
 	"strings"
@@ -13,11 +13,12 @@ import (
 
 var bits = flag.Int("bits", 384, "supports 224, 256, 384 and 512 bits.")
 var file = flag.String("file", "-", "file to perform SHA-3.")
+
 const (
-	ERR_READ = 1
-	ERR_BITS = 2
-	ERR_STAT = 3
-	ERR_OPEN = 4
+	ERR_READ  = 1
+	ERR_NBITS = 2
+	ERR_STAT  = 3
+	ERR_OPEN  = 4
 )
 
 func main() {
@@ -44,7 +45,7 @@ func main() {
 			alg = val
 		} else {
 			fmt.Fprintln(os.Stderr, "unsupported number of bits")
-			os.Exit(ERR_BITS)
+			os.Exit(ERR_NBITS)
 		}
 		alg.Write(buf)
 		buf = alg.Sum(nil)
@@ -70,7 +71,7 @@ func main() {
 			alg = val
 		} else {
 			fmt.Fprintln(os.Stderr, "unsupported number of bits")
-			os.Exit(ERR_BITS)
+			os.Exit(ERR_NBITS)
 		}
 		alg.Write(buf)
 		buf = alg.Sum(nil)

@@ -1,4 +1,4 @@
-all: build install
+all: build install test
 
 build:
 	@echo "\033[0;42mBuilding sha3sum...\033[0;0m"
@@ -19,4 +19,7 @@ distclean:
 	@rm -rf builds
 
 test:
+	@echo "\033[0;42mTesting sha3sum build...\033[0;0m"
 	@go test
+
+.PHONY: clean distclean

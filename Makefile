@@ -1,4 +1,4 @@
-all: build install test
+all: build install test installsystem
 
 build:
 	@echo "\033[0;42mBuilding sha3sum...\033[0;0m"
@@ -8,18 +8,22 @@ build:
 install: build
 	@echo "\033[0;42mInstalling sha3sum...\033[0;0m"
 	@mkdir -p builds/usr/bin >/dev/null 2>&1 
-	@mv -vf ./sha3sum builds/usr/bin/ >/dev/null 2>&1
+	@mv -vf ./sha3sum builds/usr/bin/
+
+installsys:
+	@echo "\033[0;42mInstalling sha3sum (system-wide)...\033[0;0m"
+	@sudo mv -vf ./sha3sum /usr/local/bin/
 
 clean:
 	@echo "\033[0;42mCleaning sha3sum build...\033[0;0m"
 	@rm -f ./sha3sum
 
 distclean:
-	@echo "\033[0;42mDistcleaning sha3sum build...\033[0;0m"
+	@echo "\033[0;42mDist cleaning sha3sum in build...\033[0;0m"
 	@rm -rf builds
 
-test:
-	@echo "\033[0;42mTesting sha3sum build...\033[0;0m"
+test: install
+	@echo "\033[0;42mTesting sha3sum...\033[0;0m"
 	@go test
 
 .PHONY: clean distclean

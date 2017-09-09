@@ -2,79 +2,84 @@ package main
 
 import (
 	"bufio"
+	"bytes"
 	"encoding/hex"
+	"errors"
 	"flag"
 	"fmt"
-	"golang.org/x/crypto/sha3"
 	"hash"
+	"log"
 	"os"
 	"strings"
+
+	"golang.org/x/crypto/sha3"
 )
 
-var bits = flag.Int("bits", 384, "supports 224, 256, 384 and 512 bits.")
-var file = flag.String("file", "-", "file to perform SHA-3.")
-
-const (
-	ERR_READ  = 1
-	ERR_NBITS = 2
-	ERR_STAT  = 3
-	ERR_OPEN  = 4
-)
-
-func main() {
-	flag.Parse()
-	supported_alg := map[int]hash.Hash{
+var (
+	supportedAlgorithmBits = map[int]hash.Hash{
 		224: sha3.New224(),
 		256: sha3.New256(),
 		384: sha3.New384(),
 		512: sha3.New512(),
 	}
-	alg := sha3.New384() // Default
-	if *file == "-" {    // Stdin
+	bits = flag.Int("bits", 384, "support 224, 256, 384 and 512 bits")
+	file = flag.String("file", "-", "input file")
+)
+
+//computeSha3 calculates the SHA-3 hash of buf using (n)bits of SHA-3 hashing algorithm and returns the result as a byte slice
+func computeSha3(buf []byte, bits int) ([]byte, error) {
+	if bits != 224 && bits != 256 && bits != 384 && bits != 512 {
+		return nil, errors.New("unsupported number of bits")
+	}
+	if algo, ok := supportedAlgorithmBits[bits]; ok {
+		_, err := algo.Write(buf)
+		if err != nil {
+			return nil, err
+		}
+		return algo.Sum(nil), nil
+	}
+	return nil, nil
+}
+
+func main() {
+	flag.Parse()
+
+	if *file == "-" {
+		buf := bytes.Buffer{}
 		scanner := bufio.NewScanner(os.Stdin)
-		var stdinBuf string
 		for scanner.Scan() {
-			stdinBuf += scanner.Text()
+			buf.Write(scanner.Bytes())
 		}
 		if err := scanner.Err(); err != nil {
-			fmt.Fprintln(os.Stderr, "read stdin:", err)
-			os.Exit(ERR_READ)
+			log.Fatal(err)
 		}
-		buf := []byte(stdinBuf)
-		if val, exists := supported_alg[*bits]; exists {
-			alg = val
-		} else {
-			fmt.Fprintln(os.Stderr, "unsupported number of bits")
-			os.Exit(ERR_NBITS)
-		}
-		alg.Write(buf)
-		buf = alg.Sum(nil)
-		fmt.Printf("%v -\n", strings.ToLower(hex.EncodeToString(buf)))
-	} else { // File
-		fi, err := os.Stat(*file)
+		sum, err := computeSha3(buf.Bytes(), *bits)
 		if err != nil {
-			fmt.Fprintln(os.Stderr, "stat error:", err)
-			os.Exit(ERR_STAT)
+			log.Fatal(err)
 		}
-		buf := make([]byte, fi.Size())
-		c, err := os.Open(*file)
-		if err != nil {
-			fmt.Fprintln(os.Stderr, "open error:", err)
-			os.Exit(ERR_OPEN)
-		}
-		_, err = c.Read(buf)
-		if err != nil {
-			fmt.Fprintln(os.Stderr, "read error:", err)
-			os.Exit(ERR_READ)
-		}
-		if val, exists := supported_alg[*bits]; exists {
-			alg = val
-		} else {
-			fmt.Fprintln(os.Stderr, "unsupported number of bits")
-			os.Exit(ERR_NBITS)
-		}
-		alg.Write(buf)
-		buf = alg.Sum(nil)
-		fmt.Printf("%v %s\n", strings.ToLower(hex.EncodeToString(buf)), *file)
+		fmt.Printf("%s -\n", strings.ToLower(hex.EncodeToString(sum)))
+		return
 	}
+
+	fi, err := os.Stat(*file)
+	if err != nil {
+		log.Fatal(err)
+	}
+	buf := make([]byte, fi.Size())
+	c, err := os.Open(*file)
+	if err != nil {
+		log.Fatal(err)
+	}
+	n, err := c.Read(buf)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if int64(n) != fi.Size() {
+		log.Fatal("file size mismatches read size")
+	}
+	sum, err := computeSha3(buf, *bits)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("%s %s\n", strings.ToLower(hex.EncodeToString(sum)), *file)
 }
